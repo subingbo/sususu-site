@@ -14,6 +14,32 @@
     return value ? String(value).slice(0, 10) : ''
   }
 
+  function displayName(comment) {
+    return (comment.authorNickname || '塔员').trim() || '塔员'
+  }
+
+  function letterAvatar(name) {
+    const fallback = document.createElement('span')
+    fallback.className = 'comment__avatar comment__avatar--letter'
+    fallback.textContent = Array.from(name)[0] || '塔'
+    fallback.setAttribute('aria-hidden', 'true')
+    return fallback
+  }
+
+  function createAvatar(comment) {
+    const name = displayName(comment)
+    if (!comment.authorAvatar) return letterAvatar(name)
+    const image = document.createElement('img')
+    image.className = 'comment__avatar'
+    image.src = comment.authorAvatar
+    image.alt = name
+    image.loading = 'lazy'
+    image.addEventListener('error', function () {
+      image.replaceWith(letterAvatar(name))
+    })
+    return image
+  }
+
   function categoryLabel(category) {
     if (!category) return '文章'
     return category
@@ -249,14 +275,18 @@
           commentsEl.innerHTML = '<div class="empty">还没有留言</div>'
         } else {
           page.items.forEach(function (comment) {
+            const name = displayName(comment)
             const item = document.createElement('div')
             item.className = 'comment'
+            const content = document.createElement('div')
+            content.className = 'comment__body'
             const meta = document.createElement('div')
             meta.className = 'comment__meta'
-            meta.textContent = (comment.authorNickname || '塔员') + ' · ' + formatDate(comment.createdAt)
+            meta.textContent = name + ' · ' + formatDate(comment.createdAt)
             const body = document.createElement('p')
             body.textContent = comment.content
-            item.append(meta, body)
+            content.append(meta, body)
+            item.append(createAvatar(comment), content)
             commentsEl.appendChild(item)
           })
         }

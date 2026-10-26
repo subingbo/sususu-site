@@ -139,6 +139,7 @@ GET /open/pages/{slug}/posts/{postId}/comments?pageNum=1&pageSize=20
         "parentId": null,
         "content": "写得好",
         "authorNickname": "小鹿",
+        "authorAvatar": "https://www.quantacenter.com/profile/avatar/2026/10/26/abc.png",
         "replyToNickname": "",
         "createdAt": "2026-10-25 13:44:38"
       }
@@ -150,7 +151,8 @@ GET /open/pages/{slug}/posts/{postId}/comments?pageNum=1&pageSize=20
 }
 ```
 
-- 留言作者**只暴露社区昵称**（可能为空，建议前端显示为「塔员」），不会返回真实姓名、部门、头像或用户 ID
+- 留言作者**只暴露社区昵称和公开头像**：`authorNickname` 可能为空（建议显示为「塔员」）；`authorAvatar` 是门户域名下的绝对 URL，未设置时为空字符串，前端应做首字占位与加载失败回退
+- 仍不会返回真实姓名、部门或用户 ID
 - 回复关系用 `parentId` / `replyToNickname` 表示
 
 ### 4.4 状态码与错误处理
@@ -199,7 +201,10 @@ GET /open/pages/{slug}/posts/{postId}/comments?pageNum=1&pageSize=20
     #detail pre { overflow: auto; padding: 14px; background: #f6f6f7; border-radius: 8px; }
     #detail blockquote { margin: 16px 0; padding: 8px 16px; border-left: 3px solid #f97316; background: #fafafa; }
     #comments { margin-top: 40px; }
-    .comment { padding: 12px 0; border-bottom: 1px solid #f0f0f2; }
+    .comment { display: flex; gap: 10px; padding: 12px 0; border-bottom: 1px solid #f0f0f2; }
+    .comment__avatar { flex: none; width: 28px; height: 28px; border-radius: 24%; object-fit: cover; background: #fff3e8; }
+    .comment__avatar--letter { display: grid; place-items: center; color: #f97316; font-size: 12px; font-weight: 600; }
+    .comment__body { min-width: 0; }
     .comment small { color: #8a8a92; }
     .comment p { margin: 6px 0 0; white-space: pre-wrap; }
   </style>
@@ -296,11 +301,32 @@ GET /open/pages/{slug}/posts/{postId}/comments?pageNum=1&pageSize=20
       for (const comment of comments.items) {
         const wrapper = document.createElement('div')
         wrapper.className = 'comment'
+        const name = (comment.authorNickname || '塔员').trim() || '塔员'
+
+        // 有头像用图片；无头像或加载失败时回退为昵称首字
+        const letter = document.createElement('span')
+        letter.className = 'comment__avatar comment__avatar--letter'
+        letter.textContent = Array.from(name)[0]
+        if (comment.authorAvatar) {
+          const image = document.createElement('img')
+          image.className = 'comment__avatar'
+          image.src = comment.authorAvatar
+          image.alt = name
+          image.loading = 'lazy'
+          image.addEventListener('error', () => image.replaceWith(letter))
+          wrapper.appendChild(image)
+        } else {
+          wrapper.appendChild(letter)
+        }
+
+        const body = document.createElement('div')
+        body.className = 'comment__body'
         const meta = document.createElement('small')
-        meta.textContent = `${comment.authorNickname || '塔员'} · ${comment.createdAt}`
+        meta.textContent = `${name} · ${comment.createdAt}`
         const text = document.createElement('p')
         text.textContent = comment.content
-        wrapper.append(meta, text)
+        body.append(meta, text)
+        wrapper.appendChild(body)
         list.appendChild(wrapper)
       }
     }

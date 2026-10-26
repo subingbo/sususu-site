@@ -243,9 +243,12 @@ img { max-width: 100%; }
 
 .comments { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--line); }
 .comments h2 { font-size: 20px; margin: 0 0 16px; }
-.comment { padding: 14px 16px; border-radius: 14px; background: var(--bg-soft); margin-bottom: 10px; }
+.comment { display: flex; gap: 12px; padding: 14px 16px; border-radius: 14px; background: var(--bg-soft); margin-bottom: 10px; }
+.comment__avatar { flex: none; width: 32px; height: 32px; border-radius: 24%; object-fit: cover; background: var(--orange-soft); }
+.comment__avatar--letter { display: grid; place-items: center; color: var(--orange); font-size: 13px; font-weight: 600; }
+.comment__body { flex: 1; min-width: 0; }
 .comment__meta { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
-.comment p { margin: 0; }
+.comment p { margin: 0; overflow-wrap: anywhere; }
 
 .about-card { padding: 24px 26px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; margin-bottom: 18px; }
 .about-card h2 { margin: 0 0 10px; font-size: 20px; letter-spacing: -.02em; }
