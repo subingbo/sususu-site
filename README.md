@@ -11,6 +11,10 @@
   - `GET /open/pages/sususu/posts/{postId}/comments`：留言
 - 因此：**写文章只需在论坛发帖，站点自动更新；改版式才需要动这个仓库。**
 
+## 文档
+
+- 给同学的接入教程（从零到上线，含可复制示例）：[docs/open-api-guide.md](docs/open-api-guide.md)
+
 ## 页面
 
 | 文件 | 说明 |
