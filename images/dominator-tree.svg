@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <rect width="900" height="430" fill="#0f1115"/>
+  <text x="450" y="42" text-anchor="middle" fill="#ffb37a" font-size="22" font-weight="700">支配树：谁保留了最大的一批内存</text>
+  <g font-size="15" fill="#e8eaee">
+    <rect x="330" y="70" width="240" height="44" rx="10" fill="#1c2230" stroke="#3a4557"/>
+    <text x="450" y="97" text-anchor="middle">GC Root</text>
+
+    <rect x="300" y="140" width="300" height="44" rx="10" fill="#1c2230" stroke="#3a4557"/>
+    <text x="450" y="167" text-anchor="middle">Spring 单例 Bean：UserService</text>
+
+    <rect x="270" y="210" width="360" height="44" rx="10" fill="#1c2230" stroke="#f97316"/>
+    <text x="450" y="237" text-anchor="middle" fill="#ffb37a">cache : ConcurrentHashMap&lt;Long, List&lt;byte[]&gt;&gt;</text>
+
+    <rect x="330" y="280" width="240" height="44" rx="10" fill="#1c2230" stroke="#3a4557"/>
+    <text x="450" y="307" text-anchor="middle">Entry → List&lt;byte[]&gt;</text>
+
+    <rect x="300" y="350" width="300" height="52" rx="10" fill="#2a1b12" stroke="#f97316"/>
+    <text x="450" y="374" text-anchor="middle" fill="#ffb37a">大量 byte[]（Retained ≈ 800 MB 示意）</text>
+    <text x="450" y="393" text-anchor="middle" fill="#9aa3b2" font-size="12">没有容量上限 / TTL / 清理逻辑</text>
+  </g>
+  <g stroke="#5b6678" stroke-width="2" fill="none">
+    <line x1="450" y1="114" x2="450" y2="138"/>
+    <line x1="450" y1="184" x2="450" y2="208"/>
+    <line x1="450" y1="254" x2="450" y2="278"/>
+    <line x1="450" y1="324" x2="450" y2="348"/>
+  </g>
+  <text x="450" y="424" text-anchor="middle" fill="#9aa3b2" font-size="12">支配树上的边表示“支配关系”，不一定是直接的 Java 字段引用</text>
+</svg>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <meta name="description" content="关于苏秉铂：Java 后端开发者，关注并发、JVM 与数据库。" />
+  <title>关于 · 苏秉铂的个人网站</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">苏</span><span>苏秉铂</span></a>
+      <nav class="site-nav">
+        <a href="index.html" data-nav="home">首页</a>
+        <a href="blog.html" data-nav="blog">文章</a>
+        <a href="about.html" data-nav="about">关于</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <p class="eyebrow">ABOUT</p>
+    <h1 style="margin:0 0 18px;font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;">关于这座小小站点</h1>
+
+    <section class="about-card">
+      <h2>关于我</h2>
+      <p>苏秉铂，Quanta 社团成员（学号 20241003093），方向是 Java 后端开发。</p>
+      <p>关注的主题：</p>
+      <ul>
+        <li>Java 并发与 JVM：ThreadLocal 与线程本地存储、volatile 与内存屏障、堆快照与 MAT 排查</li>
+        <li>认证与会话：JWT、双 Token、Refresh Token 轮换与服务端会话管理</li>
+        <li>基础数据结构与底层：HashMap 寻址与扩容、CPU Cache、伪共享与缓存一致性</li>
+        <li>数据库与缓存：索引、事务与缓存设计（持续学习中）</li>
+      </ul>
+    </section>
+
+    <section class="about-card">
+      <h2>这个站点怎么工作</h2>
+      <p>
+        这个站点是放在 GitHub 上的纯静态页面（由 Quanta Pages 部署到 sususu.page.quantacenter.com）。
+        所有文章<strong>不在</strong>这个仓库里：浏览器打开页面时，JS 会调用 Quanta 门户的开放 API
+        （<code>/open/pages/sususu/...</code>）实时取回我在论坛发布的文章与留言，再渲染到页面上。
+      </p>
+      <p>所以：写文章只需要在论坛发帖，站点会自动显示最新内容；改版式才需要动这个仓库。</p>
+    </section>
+
+    <section class="about-card">
+      <h2>找到我</h2>
+      <ul>
+        <li>GitHub：<a href="https://github.com/subingbo" target="_blank" rel="noopener noreferrer">github.com/subingbo</a></li>
+        <li>本站文章同样发布在 Quanta 门户的社区论坛（塔员可见，个人站点公开展示）</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <span>© 2026 苏秉铂 · 内容来自 Quanta 门户论坛</span>
+      <a href="https://www.quantacenter.com" target="_blank" rel="noopener noreferrer">Quanta Center ↗</a>
+    </div>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

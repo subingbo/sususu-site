@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <meta name="description" content="苏秉铂的文章列表：Java 后端、并发、JVM 与数据库学习笔记。" />
+  <title>文章 · 苏秉铂的个人网站</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">苏</span><span>苏秉铂</span></a>
+      <nav class="site-nav">
+        <a href="index.html" data-nav="home">首页</a>
+        <a href="blog.html" data-nav="blog">文章</a>
+        <a href="about.html" data-nav="about">关于</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section>
+      <p class="eyebrow">ARCHIVE</p>
+      <h1 style="margin:0 0 6px;font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;">文章</h1>
+      <p class="status">内容通过 Quanta 门户开放 API 实时读取，与论坛文章自动同步。</p>
+
+      <div id="category-filters" class="filters" role="group" aria-label="分类筛选">
+        <button type="button" class="is-active" data-category="">全部</button>
+        <button type="button" data-category="TECH">TECH</button>
+        <button type="button" data-category="PROJECT">PROJECT</button>
+        <button type="button" data-category="LIFE">LIFE</button>
+      </div>
+
+      <p id="list-status" class="status">加载中…</p>
+      <div id="post-list" class="post-list"></div>
+      <div class="actions">
+        <button id="load-more" class="button button--ghost" type="button" hidden>加载更多</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <span>© 2026 苏秉铂 · 内容来自 Quanta 门户论坛</span>
+      <a href="https://www.quantacenter.com" target="_blank" rel="noopener noreferrer">Quanta Center ↗</a>
+    </div>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

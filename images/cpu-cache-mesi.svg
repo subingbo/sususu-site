@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430" viewBox="0 0 1000 430" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <rect width="1000" height="430" fill="#ffffff"/>
+  <text x="500" y="40" text-anchor="middle" fill="#f97316" font-size="20" font-weight="700">多核缓存、MESI 与伪共享</text>
+
+  <g font-size="13" fill="#242529">
+    <rect x="60" y="80" width="300" height="180" rx="14" fill="#f7f7f8" stroke="#ececef"/>
+    <text x="210" y="112" text-anchor="middle" font-size="14" font-weight="700">CPU Core 1</text>
+    <rect x="100" y="132" width="220" height="42" rx="8" fill="#ffffff" stroke="#ececef"/>
+    <text x="210" y="158" text-anchor="middle">L1 Cache</text>
+    <text x="210" y="200" text-anchor="middle" fill="#f97316" font-weight="700">a = 100（M）</text>
+    <text x="210" y="224" text-anchor="middle" fill="#8a8d94" font-size="12">写后独占，其他副本失效</text>
+
+    <rect x="640" y="80" width="300" height="180" rx="14" fill="#f7f7f8" stroke="#ececef"/>
+    <text x="790" y="112" text-anchor="middle" font-size="14" font-weight="700">CPU Core 2</text>
+    <rect x="680" y="132" width="220" height="42" rx="8" fill="#ffffff" stroke="#ececef"/>
+    <text x="790" y="158" text-anchor="middle">L1 Cache</text>
+    <text x="790" y="200" text-anchor="middle" fill="#8a8d94" font-weight="700">b 的缓存行（I）</text>
+    <text x="790" y="224" text-anchor="middle" fill="#8a8d94" font-size="12">同一缓存行被写 → 失效</text>
+
+    <rect x="330" y="120" width="340" height="100" rx="12" fill="#fff1e6" stroke="#f97316"/>
+    <text x="500" y="152" text-anchor="middle" font-weight="700">MESI 一致性协议</text>
+    <text x="500" y="176" text-anchor="middle" fill="#55575c" font-size="12">M 修改 · E 独占 · S 共享 · I 无效</text>
+    <text x="500" y="200" text-anchor="middle" fill="#55575c" font-size="12">同一行不能同时被两个核心独立修改</text>
+
+    <rect x="250" y="300" width="500" height="54" rx="12" fill="#f7f7f8" stroke="#ececef"/>
+    <text x="500" y="324" text-anchor="middle">RAM（主内存）</text>
+    <text x="500" y="345" text-anchor="middle" fill="#8a8d94" font-size="12">缓存以 64B 缓存行为粒度加载</text>
+
+    <rect x="30" y="380" width="940" height="36" rx="8" fill="#ffffff" stroke="#ececef" stroke-dasharray="5 4"/>
+    <text x="500" y="403" text-anchor="middle" fill="#55575c" font-size="12">同一缓存行：a（8B）· b（8B）· 填充 —— 线程A写a、线程B写b → 缓存行乒乓（伪共享）</text>
+  </g>
+
+  <g stroke="#f97316" stroke-width="2" fill="none" marker-end="url(#carrow)">
+    <line x1="360" y1="170" x2="470" y2="170"/>
+    <line x1="530" y1="170" x2="640" y2="170"/>
+    <line x1="500" y1="220" x2="500" y2="298"/>
+    <line x1="500" y1="300" x2="500" y2="260"/>
+  </g>
+  <defs>
+    <marker id="carrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#f97316"/>
+    </marker>
+  </defs>
+
+  <text x="500" y="278" text-anchor="middle" fill="#8a8d94" font-size="11">加载 / 写回</text>
+</svg>

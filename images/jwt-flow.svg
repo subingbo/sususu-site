@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="380" viewBox="0 0 1040 380" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <rect width="1040" height="380" fill="#ffffff"/>
+  <text x="520" y="40" text-anchor="middle" fill="#f97316" font-size="20" font-weight="700">双 Token 登录与刷新流程</text>
+
+  <g font-size="13" fill="#242529">
+    <rect x="30" y="80" width="170" height="64" rx="12" fill="#f7f7f8" stroke="#ececef"/>
+    <text x="115" y="108" text-anchor="middle">① 用户登录</text>
+    <text x="115" y="130" text-anchor="middle" fill="#8a8d94" font-size="11">POST /auth/login</text>
+
+    <rect x="240" y="80" width="240" height="64" rx="12" fill="#fff1e6" stroke="#f97316"/>
+    <text x="360" y="104" text-anchor="middle" fill="#242529" font-weight="700">② 签发两种凭证</text>
+    <text x="360" y="126" text-anchor="middle" fill="#55575c" font-size="11">Access 30min（返回前端）· Refresh 7d（HttpOnly Cookie）</text>
+
+    <rect x="520" y="80" width="210" height="64" rx="12" fill="#f7f7f8" stroke="#ececef"/>
+    <text x="625" y="108" text-anchor="middle">③ 业务请求</text>
+    <text x="625" y="130" text-anchor="middle" fill="#8a8d94" font-size="11">Authorization: Bearer Access</text>
+
+    <rect x="770" y="80" width="240" height="64" rx="12" fill="#f7f7f8" stroke="#ececef"/>
+    <text x="890" y="104" text-anchor="middle">Access 过期 → 401</text>
+    <text x="890" y="126" text-anchor="middle" fill="#8a8d94" font-size="11">只影响访问，不影响 Refresh</text>
+
+    <rect x="30" y="220" width="240" height="64" rx="12" fill="#f7f7f8" stroke="#ececef"/>
+    <text x="150" y="244" text-anchor="middle">④ POST /auth/refresh</text>
+    <text x="150" y="266" text-anchor="middle" fill="#8a8d94" font-size="11">浏览器自动携带 Refresh Cookie</text>
+
+    <rect x="310" y="220" width="260" height="64" rx="12" fill="#fff1e6" stroke="#f97316"/>
+    <text x="440" y="244" text-anchor="middle" fill="#242529" font-weight="700">⑤ 校验 Redis + 轮换</text>
+    <text x="440" y="266" text-anchor="middle" fill="#55575c" font-size="11">旧 Refresh 作废，签发新 Access + 新 Refresh</text>
+
+    <rect x="610" y="220" width="200" height="64" rx="12" fill="#f7f7f8" stroke="#ececef"/>
+    <text x="710" y="248" text-anchor="middle">⑥ 前端重试原请求</text>
+    <text x="710" y="270" text-anchor="middle" fill="#8a8d94" font-size="11">使用新的 Access</text>
+
+    <rect x="850" y="220" width="160" height="64" rx="12" fill="#f7f7f8" stroke="#ececef"/>
+    <text x="930" y="248" text-anchor="middle">失败 → 重新登录</text>
+    <text x="930" y="270" text-anchor="middle" fill="#8a8d94" font-size="11">Refresh 过期或被撤销</text>
+  </g>
+
+  <g stroke="#f97316" stroke-width="2" fill="none" marker-end="url(#jarrow)">
+    <line x1="200" y1="112" x2="238" y2="112"/>
+    <line x1="480" y1="112" x2="518" y2="112"/>
+    <line x1="730" y1="112" x2="768" y2="112"/>
+    <line x1="890" y1="144" x2="890" y2="176"/>
+    <line x1="890" y1="176" x2="150" y2="176"/>
+    <line x1="150" y1="176" x2="150" y2="218"/>
+    <line x1="270" y1="252" x2="308" y2="252"/>
+    <line x1="570" y1="252" x2="608" y2="252"/>
+    <line x1="810" y1="252" x2="848" y2="252"/>
+  </g>
+  <defs>
+    <marker id="jarrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#f97316"/>
+    </marker>
+  </defs>
+
+  <text x="520" y="338" text-anchor="middle" fill="#8a8d94" font-size="12">核心：长期凭证（Refresh）不参与高频业务请求；业务请求只携带短期 Access</text>
+</svg>

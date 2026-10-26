@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <rect width="1000" height="420" fill="#ffffff"/>
+  <text x="500" y="40" text-anchor="middle" fill="#f97316" font-size="20" font-weight="700">HashMap 扩容：hash &amp; oldCap 决定去留</text>
+
+  <g font-size="13" fill="#242529">
+    <rect x="30" y="90" width="270" height="230" rx="14" fill="#f7f7f8" stroke="#ececef"/>
+    <text x="165" y="120" text-anchor="middle" font-size="14" font-weight="700">扩容前 oldCap = 16</text>
+    <text x="165" y="144" text-anchor="middle" fill="#8a8d94" font-size="12">掩码 15 = 0000 1111</text>
+    <rect x="60" y="170" width="210" height="46" rx="8" fill="#ffffff" stroke="#ececef"/>
+    <text x="165" y="198" text-anchor="middle">桶 5：A(00101) → B(10101)</text>
+    <text x="165" y="240" text-anchor="middle" fill="#8a8d94" font-size="12">A、B 都落在索引 5</text>
+    <text x="165" y="294" text-anchor="middle" fill="#8a8d94" font-size="12">冲突：同一条链表</text>
+
+    <rect x="340" y="90" width="320" height="230" rx="14" fill="#fff1e6" stroke="#f97316"/>
+    <text x="500" y="120" text-anchor="middle" font-size="14" font-weight="700">判断新增位：hash &amp; oldCap</text>
+    <text x="500" y="160" text-anchor="middle">A：5 &amp; 16 = 0 → 低位 lo</text>
+    <text x="500" y="192" text-anchor="middle">B：21 &amp; 16 = 16 → 高位 hi</text>
+    <text x="500" y="236" text-anchor="middle" fill="#55575c" font-size="12">只多考察一位，不重算哈希</text>
+    <text x="500" y="260" text-anchor="middle" fill="#55575c" font-size="12">JDK 8 用 tail 插法拆成两条链，O(n)</text>
+
+    <rect x="700" y="90" width="270" height="230" rx="14" fill="#f7f7f8" stroke="#ececef"/>
+    <text x="835" y="120" text-anchor="middle" font-size="14" font-weight="700">扩容后 newCap = 32</text>
+    <text x="835" y="144" text-anchor="middle" fill="#8a8d94" font-size="12">掩码 31 = 0001 1111</text>
+    <rect x="730" y="170" width="210" height="46" rx="8" fill="#ffffff" stroke="#ececef"/>
+    <text x="835" y="198" text-anchor="middle">桶 5：A</text>
+    <rect x="730" y="226" width="210" height="46" rx="8" fill="#ffffff" stroke="#ececef"/>
+    <text x="835" y="254" text-anchor="middle">桶 21：B（5 + 16）</text>
+  </g>
+
+  <g stroke="#f97316" stroke-width="2" fill="none" marker-end="url(#harrow)">
+    <line x1="300" y1="205" x2="338" y2="205"/>
+    <line x1="660" y1="205" x2="698" y2="205"/>
+  </g>
+  <defs>
+    <marker id="harrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#f97316"/>
+    </marker>
+  </defs>
+
+  <text x="500" y="376" text-anchor="middle" fill="#8a8d94" font-size="12">原理：newCap - 1 = (oldCap - 1) | oldCap，因此新索引 = 旧索引 j | (hash &amp; oldCap)</text>
+</svg>

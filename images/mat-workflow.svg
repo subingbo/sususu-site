@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="220" viewBox="0 0 980 220" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+  <rect width="980" height="220" fill="#0f1115"/>
+  <text x="490" y="42" text-anchor="middle" fill="#ffb37a" font-size="22" font-weight="700">MAT 标准排查顺序</text>
+  <g font-size="14" fill="#e8eaee">
+    <rect x="20" y="80" width="168" height="72" rx="12" fill="#1c2230" stroke="#3a4557"/>
+    <text x="104" y="112" text-anchor="middle">① 打开 HPROF</text>
+    <text x="104" y="136" text-anchor="middle" fill="#9aa3b2" font-size="12">建立索引</text>
+
+    <rect x="212" y="80" width="168" height="72" rx="12" fill="#1c2230" stroke="#3a4557"/>
+    <text x="296" y="108" text-anchor="middle">② Leak Suspects</text>
+    <text x="296" y="132" text-anchor="middle" fill="#9aa3b2" font-size="12">/ Overview 先看热点</text>
+
+    <rect x="404" y="80" width="168" height="72" rx="12" fill="#1c2230" stroke="#3a4557"/>
+    <text x="488" y="112" text-anchor="middle">③ Histogram</text>
+    <text x="488" y="136" text-anchor="middle" fill="#9aa3b2" font-size="12">按类型看实例数</text>
+
+    <rect x="596" y="80" width="168" height="72" rx="12" fill="#1c2230" stroke="#f97316"/>
+    <text x="680" y="108" text-anchor="middle" fill="#ffb37a">④ Dominator Tree</text>
+    <text x="680" y="132" text-anchor="middle" fill="#9aa3b2" font-size="12">按 Retained 排序</text>
+
+    <rect x="788" y="80" width="168" height="72" rx="12" fill="#1c2230" stroke="#3a4557"/>
+    <text x="872" y="108" text-anchor="middle">⑤ Path to GC Roots</text>
+    <text x="872" y="132" text-anchor="middle" fill="#9aa3b2" font-size="12">为什么没被回收</text>
+  </g>
+  <g stroke="#f97316" stroke-width="2" fill="none" marker-end="url(#a2)">
+    <line x1="188" y1="116" x2="210" y2="116"/>
+    <line x1="380" y1="116" x2="402" y2="116"/>
+    <line x1="572" y1="116" x2="594" y2="116"/>
+    <line x1="764" y1="116" x2="786" y2="116"/>
+  </g>
+  <defs>
+    <marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#f97316"/>
+    </marker>
+  </defs>
+  <text x="490" y="192" text-anchor="middle" fill="#9aa3b2" font-size="12">先用支配树锁定“谁保留了内存”，再用引用链确认“为什么还活着”，最后回源码修生命周期</text>
+</svg>
