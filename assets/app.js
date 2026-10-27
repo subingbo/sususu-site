@@ -4,12 +4,18 @@
   const SLUG = 'sususu'
   const API_BASE = 'https://www.quantacenter.com/open/pages/' + SLUG
   const PAGE_SIZE = 20
+  const CONTENT_PATHS = {
+    site: 'content/site.json',
+    projects: 'content/projects.json',
+  }
   const identity = {
     name: '苏秉铂',
     initial: '苏',
     role: 'Java 后端开发',
     email: '21235386625@qq.com',
   }
+  // content.site / content.projects 为 null 时，页面保留内置静态内容（projects.js 快照）。
+  const content = { site: null, projects: null }
 
   const md = window.markdownit
     ? window.markdownit({ html: false, linkify: true })
@@ -51,10 +57,33 @@
     return payload ? payload.data : null
   }
 
+  async function loadJson(path) {
+    const response = await fetch(path, { cache: 'no-cache' })
+    if (!response.ok) throw new Error('HTTP ' + response.status)
+    return response.json()
+  }
+
   function showStatus(target, message, isError) {
     if (!target) return
     target.textContent = message
     target.classList.toggle('status--error', Boolean(isError))
+  }
+
+  function showContentNotice(message) {
+    if (!document.querySelector || document.querySelector('.content-notice')) return
+    const header = document.querySelector('.site-header')
+    if (!header || !header.parentNode) return
+    const notice = document.createElement('p')
+    notice.className = 'content-notice'
+    notice.setAttribute('role', 'status')
+    notice.textContent = message
+    header.parentNode.insertBefore(notice, header.nextSibling)
+  }
+
+  function setText(id, value) {
+    if (!value) return
+    const target = document.getElementById(id)
+    if (target) target.textContent = value
   }
 
   function renderMarkdown(source) {
@@ -91,6 +120,7 @@
     if (!slots.length) return
     function showFallback() {
       slots.forEach(function (slot) {
+        slot.setAttribute('aria-label', identity.name + '的头像')
         slot.replaceChildren(letterAvatar(identity.name, 'profile-avatar'))
       })
     }
@@ -122,8 +152,9 @@
     return 'article.html?id=' + encodeURIComponent(postId)
   }
 
-  function projectUrl(projectId) {
-    return 'project.html?id=' + encodeURIComponent(projectId)
+  function projectUrl(project) {
+    const key = project && (project.slug || project.id)
+    return 'project.html?id=' + encodeURIComponent(key || '')
   }
 
   function renderPostCard(post) {
@@ -165,9 +196,93 @@
     return row
   }
 
+  function allProjects() {
+    if (content.projects) return content.projects
+    return window.PortfolioData ? window.PortfolioData.all : []
+  }
+
+  function visibleProjects() {
+    return allProjects()
+      .filter(function (project) {
+        return !project.status || project.status === 'published'
+      })
+      .sort(function (a, b) {
+        return (a.order || 0) - (b.order || 0)
+      })
+  }
+
+  function findProject(key) {
+    if (!key) return null
+    return allProjects().find(function (project) {
+      return project.slug === key || project.id === key
+    }) || null
+  }
+
+  function coverMediaItem(project) {
+    const media = Array.isArray(project.media) ? project.media : []
+    if (!media.length) return null
+    const chosen = project.coverMediaId
+      ? media.find(function (item) { return item.id === project.coverMediaId })
+      : null
+    if (chosen) return chosen
+    return media.find(function (item) { return item.type !== 'video' }) || media[0]
+  }
+
+  function coverImageSrc(project) {
+    const item = coverMediaItem(project)
+    if (!item) return ''
+    return item.type === 'video' ? (item.poster || '') : (item.src || '')
+  }
+
+  function createCoverPlaceholder(project) {
+    const placeholder = document.createElement('div')
+    placeholder.className = 'cover cover--placeholder'
+    const grid = document.createElement('span')
+    grid.className = 'cover__grid'
+    grid.setAttribute('aria-hidden', 'true')
+    const label = document.createElement('span')
+    label.className = 'cover__label'
+    label.textContent = project.title || ''
+    const tag = document.createElement('span')
+    tag.className = 'cover__tag'
+    tag.textContent = project.category || 'PROJECT'
+    placeholder.append(grid, label, tag)
+    return placeholder
+  }
+
+  function createCover(project, href, className) {
+    const src = coverImageSrc(project)
+    let node
+    if (src) {
+      const image = document.createElement('img')
+      image.className = 'cover__img'
+      image.src = src
+      image.alt = ''
+      image.loading = 'lazy'
+      node = image
+    } else {
+      node = createCoverPlaceholder(project)
+    }
+    if (!href) {
+      const wrap = document.createElement('div')
+      wrap.className = className || 'cover'
+      wrap.appendChild(node)
+      return wrap
+    }
+    const link = document.createElement('a')
+    link.className = className || 'cover'
+    link.href = href
+    link.setAttribute('tabindex', '-1')
+    link.setAttribute('aria-hidden', 'true')
+    link.appendChild(node)
+    return link
+  }
+
   function renderProjectCard(project) {
     const card = document.createElement('article')
     card.className = 'project-card'
+    const href = projectUrl(project)
+    card.appendChild(createCover(project, href, 'project-card__cover cover'))
     const top = document.createElement('div')
     top.className = 'project-card__top'
     const category = document.createElement('span')
@@ -179,7 +294,7 @@
     top.append(category, role)
     const title = document.createElement('h3')
     const link = document.createElement('a')
-    link.href = projectUrl(project.id)
+    link.href = href
     link.textContent = project.title
     title.appendChild(link)
     const summary = document.createElement('p')
@@ -195,12 +310,13 @@
     })
     const proof = document.createElement('div')
     proof.className = 'project-card__proof'
+    const firstProof = project.proof && project.proof[0]
     const proofValue = document.createElement('strong')
-    proofValue.textContent = project.proof[0].value
+    proofValue.textContent = firstProof ? firstProof.value : '进行中'
     const proofLabel = document.createElement('span')
-    proofLabel.textContent = project.proof[0].label
+    proofLabel.textContent = firstProof ? firstProof.label : '项目状态'
     const detail = document.createElement('a')
-    detail.href = projectUrl(project.id)
+    detail.href = href
     detail.textContent = '查看项目 →'
     proof.append(proofValue, proofLabel, detail)
     card.append(top, title, summary, stack, proof)
@@ -210,6 +326,10 @@
   function renderProjectList(target, projects) {
     if (!target) return
     target.replaceChildren()
+    if (!projects.length) {
+      showStatus(target, '还没有公开的作品')
+      return
+    }
     projects.forEach(function (project) {
       target.appendChild(renderProjectCard(project))
     })
@@ -217,19 +337,20 @@
 
   function initFeaturedProjects() {
     const target = document.getElementById('featured-projects')
-    if (!target || !window.PortfolioData) return
-    renderProjectList(target, window.PortfolioData.all)
+    if (!target) return
+    renderProjectList(target, visibleProjects())
   }
 
   function initProjects() {
     const target = document.getElementById('project-list')
-    if (!target || !window.PortfolioData) return
-    renderProjectList(target, window.PortfolioData.all)
+    if (!target) return
+    renderProjectList(target, visibleProjects())
   }
 
   function renderProofStrip(project) {
     const strip = document.createElement('div')
     strip.className = 'proof-strip'
+    if (!project.proof || !project.proof.length) return strip
     project.proof.forEach(function (item) {
       const cell = document.createElement('div')
       cell.className = 'proof-strip__item'
@@ -241,6 +362,67 @@
       strip.appendChild(cell)
     })
     return strip
+  }
+
+  function renderMediaVisual(entry) {
+    if (entry.type === 'video') {
+      const video = document.createElement('video')
+      video.className = 'media-video'
+      video.controls = true
+      video.preload = 'metadata'
+      video.playsInline = true
+      video.setAttribute('playsinline', '')
+      if (entry.poster) video.poster = entry.poster
+      const source = document.createElement('source')
+      source.src = entry.src
+      source.type = 'video/mp4'
+      video.appendChild(source)
+      return video
+    }
+    const image = document.createElement('img')
+    image.src = entry.src
+    image.alt = entry.alt || ''
+    image.loading = 'lazy'
+    return image
+  }
+
+  function renderMediaFrame(entry, index) {
+    const figure = document.createElement('figure')
+    figure.className = 'filmstrip__frame'
+    const head = document.createElement('div')
+    head.className = 'filmstrip__head'
+    const number = document.createElement('span')
+    number.className = 'filmstrip__index'
+    number.textContent = String(index + 1).padStart(2, '0')
+    const tag = document.createElement('span')
+    tag.className = 'filmstrip__tag'
+    tag.textContent = entry.tag || (entry.type === 'video' ? 'VIDEO' : 'FRAME')
+    head.append(number, tag)
+    const visual = document.createElement('div')
+    visual.className = 'filmstrip__visual'
+    visual.appendChild(renderMediaVisual(entry))
+    const caption = document.createElement('figcaption')
+    caption.textContent = entry.caption || entry.alt || ''
+    figure.append(head, visual, caption)
+    return figure
+  }
+
+  function renderMediaFilmstrip(project) {
+    if (!Array.isArray(project.media) || !project.media.length) return null
+    const section = document.createElement('section')
+    section.className = 'project-section'
+    const heading = document.createElement('h2')
+    heading.textContent = '工程胶片'
+    const hint = document.createElement('p')
+    hint.className = 'filmstrip__hint'
+    hint.textContent = '画面编号、功能标签与对应工程成果。视频需手动播放。'
+    const strip = document.createElement('div')
+    strip.className = 'filmstrip'
+    project.media.forEach(function (entry, index) {
+      strip.appendChild(renderMediaFrame(entry, index))
+    })
+    section.append(heading, hint, strip)
+    return section
   }
 
   function renderProjectDetail(target, project) {
@@ -263,7 +445,7 @@
       target.appendChild(empty)
       return
     }
-    document.title = project.title + ' · 苏秉铂的作品'
+    document.title = project.title + ' · ' + identity.name + '的作品'
     const hero = document.createElement('header')
     hero.className = 'project-hero'
     const eyebrow = document.createElement('p')
@@ -295,6 +477,7 @@
     all.textContent = '全部作品'
     actions.appendChild(all)
     hero.appendChild(actions)
+    const cover = createCover(project, '', 'project-cover')
     const overview = document.createElement('section')
     overview.className = 'project-section'
     const overviewTitle = document.createElement('h2')
@@ -310,7 +493,7 @@
       stack.appendChild(item)
     })
     overview.append(overviewTitle, overviewText, stack)
-    target.append(hero, renderProofStrip(project), overview)
+    target.append(hero, cover, renderProofStrip(project), overview)
     project.sections.forEach(function (section) {
       const block = document.createElement('section')
       block.className = 'project-section'
@@ -321,7 +504,7 @@
       block.append(heading, body)
       target.appendChild(block)
     })
-    Object.keys(project.evidence).forEach(function (key) {
+    Object.keys(project.evidence || {}).forEach(function (key) {
       const note = document.createElement('aside')
       note.className = 'evidence-note'
       const label = document.createElement('strong')
@@ -331,35 +514,16 @@
       note.append(label, body)
       target.appendChild(note)
     })
-    if (project.gallery.length) {
-      const gallery = document.createElement('section')
-      gallery.className = 'project-section'
-      const heading = document.createElement('h2')
-      heading.textContent = '项目画面'
-      const grid = document.createElement('div')
-      grid.className = 'project-gallery'
-      project.gallery.forEach(function (entry) {
-        const figure = document.createElement('figure')
-        const image = document.createElement('img')
-        image.src = entry.src
-        image.alt = entry.alt
-        image.loading = 'lazy'
-        const caption = document.createElement('figcaption')
-        caption.textContent = entry.caption
-        figure.append(image, caption)
-        grid.appendChild(figure)
-      })
-      gallery.append(heading, grid)
-      target.appendChild(gallery)
-    }
+    const filmstrip = renderMediaFilmstrip(project)
+    if (filmstrip) target.appendChild(filmstrip)
   }
 
   function initProjectDetail() {
     const target = document.getElementById('project-detail')
     if (!target) return
-    const id = new URLSearchParams(location.search).get('id')
-    const project = window.PortfolioData ? window.PortfolioData.get(id) : null
-    renderProjectDetail(target, project)
+    const params = new URLSearchParams(location.search)
+    const key = params.get('id') || params.get('slug')
+    renderProjectDetail(target, findProject(key))
   }
 
   function markActiveNav() {
@@ -372,6 +536,142 @@
         || (nav === 'about' && current === 'about.html')
       link.classList.toggle('is-active', active)
     })
+  }
+
+  function applyProfile(profile) {
+    if (!profile) return
+    if (profile.name) {
+      identity.name = profile.name
+      identity.initial = profile.initial || Array.from(profile.name)[0] || identity.initial
+    }
+    if (profile.email) identity.email = profile.email
+  }
+
+  function renderExperienceCard(entry, withRole) {
+    const card = document.createElement('article')
+    card.className = 'experience-card'
+    const top = document.createElement('div')
+    const name = document.createElement('strong')
+    name.textContent = entry.school || entry.company || ''
+    const period = document.createElement('span')
+    period.textContent = entry.period || ''
+    top.append(name, period)
+    card.appendChild(top)
+    if (withRole) {
+      const role = document.createElement('p')
+      role.className = 'experience-card__role'
+      role.textContent = entry.role || ''
+      card.appendChild(role)
+    } else if (entry.detail) {
+      const detail = document.createElement('p')
+      detail.textContent = entry.detail
+      card.appendChild(detail)
+    }
+    if (Array.isArray(entry.bullets) && entry.bullets.length) {
+      const list = document.createElement('ul')
+      entry.bullets.forEach(function (bullet) {
+        const item = document.createElement('li')
+        item.textContent = bullet
+        list.appendChild(item)
+      })
+      card.appendChild(list)
+    }
+    return card
+  }
+
+  function applyAboutContent(about) {
+    if (!about) return
+    setText('about-intro', about.intro)
+    const education = document.getElementById('education-list')
+    if (education && Array.isArray(about.education)) {
+      education.replaceChildren()
+      about.education.forEach(function (entry) {
+        education.appendChild(renderExperienceCard(entry, false))
+      })
+    }
+    const internships = document.getElementById('internship-list')
+    if (internships && Array.isArray(about.internships)) {
+      internships.replaceChildren()
+      about.internships.forEach(function (entry) {
+        internships.appendChild(renderExperienceCard(entry, true))
+      })
+    }
+    const capabilities = document.getElementById('capability-grid')
+    if (capabilities && Array.isArray(about.capabilities)) {
+      capabilities.replaceChildren()
+      about.capabilities.forEach(function (capability) {
+        const card = document.createElement('article')
+        const heading = document.createElement('h3')
+        heading.textContent = capability.title
+        const body = document.createElement('p')
+        body.textContent = capability.description
+        card.append(heading, body)
+        capabilities.appendChild(card)
+      })
+    }
+    setText('about-contact-note', about.contactNote)
+  }
+
+  function applySiteContent() {
+    const site = content.site
+    const profile = site ? site.profile : null
+    if (profile) {
+      applyProfile(profile)
+      document.querySelectorAll('[data-brand-mark]').forEach(function (node) {
+        node.textContent = identity.initial
+      })
+      document.querySelectorAll('[data-brand-name]').forEach(function (node) {
+        node.textContent = identity.name
+      })
+      setText('hero-eyebrow', profile.eyebrow)
+      setText('hero-slogan', profile.slogan)
+      setText('hero-intro', profile.intro)
+      setText('about-name', profile.name)
+      const tags = document.getElementById('hero-tags')
+      if (tags && Array.isArray(profile.tags)) {
+        tags.replaceChildren()
+        profile.tags.forEach(function (tag) {
+          const item = document.createElement('li')
+          item.className = 'chip'
+          item.textContent = tag
+          tags.appendChild(item)
+        })
+      }
+      if (profile.github) {
+        document.querySelectorAll('[data-github-link]').forEach(function (link) {
+          link.href = profile.github
+        })
+      }
+      if (site.about) applyAboutContent(site.about)
+    }
+    document.querySelectorAll('[data-email-link]').forEach(function (link) {
+      link.href = 'mailto:' + identity.email
+    })
+    document.querySelectorAll('[data-email-label]').forEach(function (node) {
+      node.textContent = identity.email
+    })
+  }
+
+  async function loadContent() {
+    const results = await Promise.allSettled([
+      loadJson(CONTENT_PATHS.site),
+      loadJson(CONTENT_PATHS.projects),
+    ])
+    const siteResult = results[0]
+    const projectsResult = results[1]
+    if (siteResult.status === 'fulfilled' && siteResult.value && siteResult.value.profile) {
+      content.site = siteResult.value
+    }
+    if (projectsResult.status === 'fulfilled' && projectsResult.value && Array.isArray(projectsResult.value.projects)) {
+      content.projects = projectsResult.value.projects
+    }
+    if (!content.site || !content.projects) {
+      const missing = []
+      if (!content.site) missing.push('站点资料')
+      if (!content.projects) missing.push('作品数据')
+      showContentNotice(missing.join('与') + '加载失败，正在显示内置备份内容。')
+    }
+    applySiteContent()
   }
 
   async function initIndex() {
@@ -491,8 +791,8 @@
   }
 
   async function initArticle() {
-    const content = document.getElementById('article-content')
-    if (!content) return
+    const contentEl = document.getElementById('article-content')
+    if (!contentEl) return
     const titleEl = document.getElementById('article-title')
     const metaEl = document.getElementById('article-meta')
     const commentsEl = document.getElementById('comments-list')
@@ -506,7 +806,7 @@
     }
     try {
       const post = await fetchApi('/posts/' + id)
-      document.title = post.title + ' · 苏秉铂的个人网站'
+      document.title = post.title + ' · ' + identity.name + '的个人网站'
       if (titleEl) titleEl.textContent = post.title
       if (metaEl) {
         metaEl.replaceChildren()
@@ -519,12 +819,12 @@
         count.textContent = (post.commentCount || 0) + ' 条留言'
         metaEl.append(category, date, count)
       }
-      content.innerHTML = renderMarkdown(post.content)
+      contentEl.innerHTML = renderMarkdown(post.content)
       showStatus(status, '')
       await loadComments(id, commentsEl)
     } catch (error) {
       if (titleEl) titleEl.textContent = '文章不存在'
-      content.replaceChildren()
+      contentEl.replaceChildren()
       if (commentsEl) commentsEl.replaceChildren()
       showStatus(status, error.status === 404 ? '文章不存在或未公开' : error.message, true)
     }
@@ -539,10 +839,12 @@
     formatDate,
     categoryLabel,
     renderProjectDetail,
+    loadContent,
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', async function () {
     markActiveNav()
+    await loadContent()
     initProfileAvatar()
     initFeaturedProjects()
     initProjects()

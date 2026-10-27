@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "projects": [
+    {
+      "slug": "quanta-portal",
+      "status": "published",
+      "order": 1,
+      "category": "社团平台",
+      "title": "Quanta 社团综合服务平台",
+      "tagline": "把招新、成员服务与个人网站托管放进同一套可靠的后台。",
+      "role": "独立负责后端开发",
+      "summary": "面向社团日常运营的综合服务平台，覆盖招新、成员、活动、借阅、资料共享和个人网站托管。",
+      "stack": ["Java 17", "Spring Boot", "Spring Security", "MyBatis", "MySQL", "Redis", "Nginx", "GitHub API"],
+      "proof": [
+        { "value": "角色 + 部门", "label": "数据权限边界" },
+        { "value": "约 5 分钟", "label": "分支自动检查周期" },
+        { "value": "秒级", "label": "历史版本回滚" }
+      ],
+      "overview": "Quanta 门户服务社团成员、招新参与者和管理人员。我负责后端业务落地，也把个人网站从“需要自己维护服务器”变成可以绑定公开仓库或选择模板后直接发布的成员服务。",
+      "sections": [
+        {
+          "title": "业务交付与权限",
+          "body": "基于若依体系交付招新、成员、借阅和资料共享等业务，按角色与部门限制数据访问。招新流程通过事务、行锁和状态校验处理重复确认，避免重复转正或改选部门。"
+        },
+        {
+          "title": "静态网站托管与安全发布",
+          "body": "平台固定目标 Commit SHA 下载并校验静态归档，拒绝路径穿越、符号链接和超限文件；使用 staging 目录和原子符号链接切换版本，发布失败时保留当前在线版本。"
+        },
+        {
+          "title": "缓存一致性",
+          "body": "文件锁、数据库行锁和版本号共同避免旧部署覆盖新部署。业务侧使用 Spring Cache 与 Redis，并在事务提交后执行缓存和文件清理，降低数据库状态与外部资源不一致的风险。"
+        }
+      ],
+      "evidence": {
+        "deployment": "两台服务器部署后端并配置负载均衡，Redis 共享登录态与业务缓存，MySQL 主从复制同步业务数据。"
+      },
+      "sourceUrl": "https://github.com/mememoremore/quanta-portal",
+      "coverMediaId": null,
+      "media": []
+    },
+    {
+      "slug": "campus-map",
+      "status": "published",
+      "order": 2,
+      "category": "个人项目",
+      "title": "校园共享地图与社交平台",
+      "tagline": "让群组在一张地图上共享地点、讨论活动，并由 Agent 生成可核验的出行计划。",
+      "role": "个人项目 · 后端与 Agent 工程",
+      "summary": "结合共享地图、实时消息、活动日程和路线规划的校园协作平台，重点处理权限、实时事件和模型工具调用的可靠性。",
+      "stack": ["Java 17", "Spring Boot", "Spring Security", "MyBatis", "MySQL", "Redis", "WebSocket", "高德开放平台"],
+      "proof": [
+        { "value": "0/12 → 8/12", "label": "内部任务成功数" },
+        { "value": "−31.79%", "label": "总 Token" },
+        { "value": "293 项", "label": "后续离线测试" }
+      ],
+      "overview": "项目把群组、地图、地点、聊天、活动和个人日程组织在同一个协作空间。成员可以复用地点、实时接收地图事件，也可以让 Agent 在路线和时间约束下生成多站活动计划。",
+      "sections": [
+        {
+          "title": "共享地图与实时协作",
+          "body": "实现群组共享地图、角色权限与多地图地点复用。Spring Security、JWT、Redis 和 WebSocket 共同处理身份认证、在线状态与事件推送；边界框查询配合 Haversine 距离计算筛选 5 米内的重复地点。"
+        },
+        {
+          "title": "Agent 路线规划",
+          "body": "接入高德路线规划并校验多站活动的时间约束。工具错误被划分为模型可修复的业务冲突与不可修复的外部依赖故障，遇到后者快速结束，避免模型在相同失败上反复重试。"
+        },
+        {
+          "title": "Trace 与故障治理",
+          "body": "在真实执行点记录模型、工具、地图、路线、校验和保存事件，并对聊天内容、位置与凭据做脱敏。Trace 用于精确关联评测运行，定位重复提交、工具错误和长尾任务。"
+        }
+      ],
+      "evidence": {
+        "modelEvaluation": "24 次内部配对测试采用 qwen-plus AB/BA 设计，修复前后各 12 次：任务成功数从 0/12 提升到 8/12，总 Token 降低 31.79%，平均模型调用轮数降低 28.4%。这些结果来自单环境、小样本内部评测，不代表线上 SLA。",
+        "offlineVerification": "真实模型评测结束后又修复了秒级交通间隔被截断的问题；该版本通过 293 项离线测试，但没有追加真实模型运行，因此不把离线修复计入前述 24 次结果。"
+      },
+      "sourceUrl": "",
+      "coverMediaId": "campus-map-workspace",
+      "media": [
+        {
+          "id": "campus-map-workspace",
+          "type": "image",
+          "src": "media/projects/campus-map/campus-map-workspace.webp",
+          "poster": null,
+          "alt": "校园共享地图演示工作台",
+          "caption": "共享地图工作台，画面使用项目内置演示数据。",
+          "tag": "共享地图"
+        },
+        {
+          "id": "campus-trace-center",
+          "type": "image",
+          "src": "media/projects/campus-map/campus-trace-center.webp",
+          "poster": null,
+          "alt": "Agent 执行追踪列表",
+          "caption": "Agent Trace 列表，用于核对模型、工具、耗时与完整性。",
+          "tag": "Agent Trace"
+        }
+      ]
+    }
+  ]
+}

@@ -1,9 +1,13 @@
 (function () {
   'use strict'
 
+  // 内置快照：与 content/projects.json 结构一致。
+  // 页面正常时读取 content/projects.json；读取失败时用这份快照兜底展示。
   const projects = [
     {
-      id: 'quanta-portal',
+      slug: 'quanta-portal',
+      status: 'published',
+      order: 1,
       category: '社团平台',
       title: 'Quanta 社团综合服务平台',
       tagline: '把招新、成员服务与个人网站托管放进同一套可靠的后台。',
@@ -34,10 +38,13 @@
         deployment: '两台服务器部署后端并配置负载均衡，Redis 共享登录态与业务缓存，MySQL 主从复制同步业务数据。',
       },
       sourceUrl: 'https://github.com/mememoremore/quanta-portal',
-      gallery: [],
+      coverMediaId: null,
+      media: [],
     },
     {
-      id: 'campus-map',
+      slug: 'campus-map',
+      status: 'published',
+      order: 2,
       category: '个人项目',
       title: '校园共享地图与社交平台',
       tagline: '让群组在一张地图上共享地点、讨论活动，并由 Agent 生成可核验的出行计划。',
@@ -69,16 +76,25 @@
         offlineVerification: '真实模型评测结束后又修复了秒级交通间隔被截断的问题；该版本通过 293 项离线测试，但没有追加真实模型运行，因此不把离线修复计入前述 24 次结果。',
       },
       sourceUrl: '',
-      gallery: [
+      coverMediaId: 'campus-map-workspace',
+      media: [
         {
-          src: 'images/campus-map-workspace.png',
+          id: 'campus-map-workspace',
+          type: 'image',
+          src: 'media/projects/campus-map/campus-map-workspace.webp',
+          poster: null,
           alt: '校园共享地图演示工作台',
           caption: '共享地图工作台，画面使用项目内置演示数据。',
+          tag: '共享地图',
         },
         {
-          src: 'images/campus-trace-center.png',
+          id: 'campus-trace-center',
+          type: 'image',
+          src: 'media/projects/campus-map/campus-trace-center.webp',
+          poster: null,
           alt: 'Agent 执行追踪列表',
           caption: 'Agent Trace 列表，用于核对模型、工具、耗时与完整性。',
+          tag: 'Agent Trace',
         },
       ],
     },
@@ -86,8 +102,10 @@
 
   window.PortfolioData = {
     all: projects,
-    get: function (id) {
-      return projects.find(function (project) { return project.id === id }) || null
+    get: function (key) {
+      return projects.find(function (project) {
+        return project.slug === key || project.id === key
+      }) || null
     },
   }
 })()

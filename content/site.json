@@ -1,0 +1,50 @@
+{
+  "profile": {
+    "name": "苏秉铂",
+    "initial": "苏",
+    "eyebrow": "JAVA BACKEND · ENGINEERING NOTES",
+    "slogan": "把业务做成，也把系统为什么可靠讲清楚。",
+    "intro": "我是苏秉铂，广东外语外贸大学计算机科学与技术专业本科生，方向是 Java 后端开发。这里记录我交付过的系统、验证过的改进，以及持续更新的技术文章。",
+    "tags": ["Java 后端", "并发与 JVM", "数据库与缓存", "Agent 工程"],
+    "email": "21235386625@qq.com",
+    "github": "https://github.com/subingbo"
+  },
+  "about": {
+    "intro": "Java 后端开发方向，关注业务一致性、并发控制、JVM 排障和 Agent 工具调用的可靠性。",
+    "education": [
+      {
+        "school": "广东外语外贸大学",
+        "period": "2024.09—2028.06（预计）",
+        "detail": "计算机科学与技术 · 本科"
+      }
+    ],
+    "internships": [
+      {
+        "company": "广州市交通规划研究院有限公司",
+        "period": "2026.02—至今",
+        "role": "Java 后端开发实习生 · 交通规划信息化平台",
+        "bullets": [
+          "参与 GIS 空间查询、指标统计和聚合接口开发，使用 KingbaseES / PostgreSQL 完成空间数据查询、裁剪与清洗转换。",
+          "合并重复空间相交与几何计算，将一项详规评估接口耗时从 13.6 秒降至 10.2 秒，降低约 25%。",
+          "重构大规模空间数据的 SSE 流式输出，在 74.4MB 响应测试中把 JVM 堆使用峰值从 679MB 降至 255MB，降低约 62%。",
+          "结合 JVM 堆、Linux RSS 与容器指标排查内存问题，并用 20 个自动化用例验证流式输出和客户端断连行为。"
+        ]
+      }
+    ],
+    "capabilities": [
+      {
+        "title": "Java 与框架",
+        "description": "Java 集合、异常、多线程与线程池；Spring Boot、Spring Cloud、Spring Security、MyBatis。"
+      },
+      {
+        "title": "数据库与缓存",
+        "description": "MySQL 索引、事务和锁；Redis 缓存与令牌管理；KingbaseES / PostgreSQL 空间查询与 SQL 优化。"
+      },
+      {
+        "title": "协议与工程",
+        "description": "HTTP、JWT、SSE、WebSocket；Git、Maven、Linux、Docker Compose、Nacos 与基础 Kubernetes 部署流程。"
+      }
+    ],
+    "contactNote": "如果你想讨论 Java 后端、系统可靠性或这些项目，可以直接发邮件给我。"
+  }
+}

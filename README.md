@@ -11,6 +11,15 @@
   - `GET /open/pages/sususu/posts/{postId}/comments`：留言
 - 因此：**写文章只需在论坛发帖，站点自动更新；改版式才需要动这个仓库。**
 
+## 内容数据
+
+- 首页资料、关于页与作品数据存放在两个公开 JSON 文件里，作为唯一数据源：
+  - `content/site.json`：个人资料、技术标签、联系方式、教育、实习与能力。
+  - `content/projects.json`：项目状态（published / draft / archived）、排序、文案、链接、封面与媒体列表。
+- 页面用 `fetch(..., { cache: "no-cache" })` 同源读取；读取失败时保留 HTML / `assets/projects.js` 中的内置备份，并在页头显示提示。
+- 作品媒体统一放在 `media/projects/<project-slug>/`：图片为 WebP（最长边 1920px、≤2 MiB），视频为 H.264/AAC MP4（≤1080p、≤90 秒、≤18 MiB，附 WebP 封面）。
+- 这些文件由本地内容工作台维护（编辑、上传、发布），也可以手动修改后提交。
+
 ## 文档
 
 - 给同学的接入教程（从零到上线，含可复制示例）：[docs/open-api-guide.md](docs/open-api-guide.md)
@@ -30,10 +39,12 @@
 
 ```
 assets/styles.css     全站样式（浅色简约，橙色强调，color-scheme: light）
-assets/app.js         API 封装、markdown-it 渲染、列表/详情/留言渲染
-assets/projects.js    集中维护的作品数据
+assets/app.js         API 封装、内容 JSON 加载、列表/详情/留言渲染
+assets/projects.js    作品数据内置快照（内容 JSON 读取失败时兜底）
+content/              site.json / projects.json 公开内容数据
+media/                作品图片与视频（按项目 slug 分目录）
 vendor/               markdown-it（自托管，不依赖 CDN）
-images/               文章配图与作品演示截图
+images/               文章配图
 tests/                零依赖 Node 验收测试
 ```
 

@@ -12,7 +12,7 @@
 <body>
   <header class="site-header">
     <div class="site-header__inner">
-      <a class="brand" href="index.html"><span class="brand__mark">苏</span><span class="brand__name">苏秉铂</span></a>
+      <a class="brand" href="index.html"><span class="brand__mark" data-brand-mark>苏</span><span class="brand__name" data-brand-name>苏秉铂</span></a>
       <nav class="site-nav" aria-label="主导航">
         <a href="index.html" data-nav="home">首页</a>
         <a href="blog.html" data-nav="blog">文章</a>
@@ -29,11 +29,11 @@
       </div>
       <div>
         <p class="eyebrow">ABOUT</p>
-        <h1>苏秉铂</h1>
-        <p>Java 后端开发方向，关注业务一致性、并发控制、JVM 排障和 Agent 工具调用的可靠性。</p>
+        <h1 id="about-name">苏秉铂</h1>
+        <p id="about-intro">Java 后端开发方向，关注业务一致性、并发控制、JVM 排障和 Agent 工具调用的可靠性。</p>
         <div class="actions">
-          <a class="button button--primary" href="mailto:21235386625@qq.com">21235386625@qq.com</a>
-          <a class="button button--ghost" href="https://github.com/subingbo" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a class="button button--primary" href="mailto:21235386625@qq.com" data-email-link data-email-label>21235386625@qq.com</a>
+          <a class="button button--ghost" href="https://github.com/subingbo" target="_blank" rel="noopener noreferrer" data-github-link>GitHub ↗</a>
         </div>
       </div>
     </header>
@@ -41,31 +41,35 @@
     <section class="about-section">
       <p class="section-kicker">EDUCATION</p>
       <h2>教育经历</h2>
-      <article class="experience-card">
-        <div><strong>广东外语外贸大学</strong><span>2024.09—2028.06（预计）</span></div>
-        <p>计算机科学与技术 · 本科</p>
-      </article>
+      <div id="education-list">
+        <article class="experience-card">
+          <div><strong>广东外语外贸大学</strong><span>2024.09—2028.06（预计）</span></div>
+          <p>计算机科学与技术 · 本科</p>
+        </article>
+      </div>
     </section>
 
     <section class="about-section">
       <p class="section-kicker">EXPERIENCE</p>
       <h2>实习经历</h2>
-      <article class="experience-card">
-        <div><strong>广州市交通规划研究院有限公司</strong><span>2026.02—至今</span></div>
-        <p class="experience-card__role">Java 后端开发实习生 · 交通规划信息化平台</p>
-        <ul>
-          <li>参与 GIS 空间查询、指标统计和聚合接口开发，使用 KingbaseES / PostgreSQL 完成空间数据查询、裁剪与清洗转换。</li>
-          <li>合并重复空间相交与几何计算，将一项详规评估接口耗时从 13.6 秒降至 10.2 秒，降低约 25%。</li>
-          <li>重构大规模空间数据的 SSE 流式输出，在 74.4MB 响应测试中把 JVM 堆使用峰值从 679MB 降至 255MB，降低约 62%。</li>
-          <li>结合 JVM 堆、Linux RSS 与容器指标排查内存问题，并用 20 个自动化用例验证流式输出和客户端断连行为。</li>
-        </ul>
-      </article>
+      <div id="internship-list">
+        <article class="experience-card">
+          <div><strong>广州市交通规划研究院有限公司</strong><span>2026.02—至今</span></div>
+          <p class="experience-card__role">Java 后端开发实习生 · 交通规划信息化平台</p>
+          <ul>
+            <li>参与 GIS 空间查询、指标统计和聚合接口开发，使用 KingbaseES / PostgreSQL 完成空间数据查询、裁剪与清洗转换。</li>
+            <li>合并重复空间相交与几何计算，将一项详规评估接口耗时从 13.6 秒降至 10.2 秒，降低约 25%。</li>
+            <li>重构大规模空间数据的 SSE 流式输出，在 74.4MB 响应测试中把 JVM 堆使用峰值从 679MB 降至 255MB，降低约 62%。</li>
+            <li>结合 JVM 堆、Linux RSS 与容器指标排查内存问题，并用 20 个自动化用例验证流式输出和客户端断连行为。</li>
+          </ul>
+        </article>
+      </div>
     </section>
 
     <section class="about-section">
       <p class="section-kicker">CAPABILITIES</p>
       <h2>技术能力</h2>
-      <div class="capability-grid">
+      <div class="capability-grid" id="capability-grid">
         <article><h3>Java 与框架</h3><p>Java 集合、异常、多线程与线程池；Spring Boot、Spring Cloud、Spring Security、MyBatis。</p></article>
         <article><h3>数据库与缓存</h3><p>MySQL 索引、事务和锁；Redis 缓存与令牌管理；KingbaseES / PostgreSQL 空间查询与 SQL 优化。</p></article>
         <article><h3>协议与工程</h3><p>HTTP、JWT、SSE、WebSocket；Git、Maven、Linux、Docker Compose、Nacos 与基础 Kubernetes 部署流程。</p></article>
@@ -74,15 +78,15 @@
 
     <section class="about-section about-cta">
       <div><p class="section-kicker">CONTACT</p><h2>继续交流</h2></div>
-      <p>如果你想讨论 Java 后端、系统可靠性或这些项目，可以直接发邮件给我。</p>
-      <a class="button button--primary" href="mailto:21235386625@qq.com">发送邮件</a>
+      <p id="about-contact-note">如果你想讨论 Java 后端、系统可靠性或这些项目，可以直接发邮件给我。</p>
+      <a class="button button--primary" href="mailto:21235386625@qq.com" data-email-link>发送邮件</a>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="site-footer__inner">
       <span>© 2026 苏秉铂</span>
-      <a href="mailto:21235386625@qq.com">21235386625@qq.com</a>
+      <a href="mailto:21235386625@qq.com" data-email-link data-email-label>21235386625@qq.com</a>
     </div>
   </footer>
 
