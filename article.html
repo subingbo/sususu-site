@@ -5,17 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light" />
   <meta name="description" content="苏秉铂的文章详情与留言。" />
-  <title>文章 · 苏秉铂的个人网站</title>
+  <title>文章 · 苏秉铂</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="site-header__inner">
-      <a class="brand" href="index.html"><span class="brand__mark">苏</span><span>苏秉铂</span></a>
-      <nav class="site-nav">
+      <a class="brand" href="index.html"><span class="brand__mark">苏</span><span class="brand__name">苏秉铂</span></a>
+      <nav class="site-nav" aria-label="主导航">
         <a href="index.html" data-nav="home">首页</a>
         <a href="blog.html" data-nav="blog">文章</a>
+        <a href="projects.html" data-nav="projects">作品</a>
         <a href="about.html" data-nav="about">关于</a>
       </nav>
     </div>
@@ -23,27 +24,28 @@
 
   <main class="page">
     <a class="back-link" href="blog.html">← 返回文章列表</a>
-    <div class="article-head">
+    <header class="article-head">
       <h1 id="article-title">加载中…</h1>
       <div id="article-meta" class="meta"></div>
-    </div>
-    <p id="article-status" class="status"></p>
+    </header>
+    <p id="article-status" class="status" aria-live="polite"></p>
     <article id="article-content" class="content"></article>
 
     <section class="comments">
       <h2>留言</h2>
-      <div id="comments-list"><div class="empty">加载中…</div></div>
+      <div id="comments-list" aria-live="polite"><p class="empty">加载中…</p></div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="site-footer__inner">
-      <span>© 2026 苏秉铂 · 内容来自 Quanta 门户论坛</span>
-      <a href="https://www.quantacenter.com" target="_blank" rel="noopener noreferrer">Quanta Center ↗</a>
+      <span>© 2026 苏秉铂</span>
+      <span>文章由 <a href="https://www.quantacenter.com" target="_blank" rel="noopener noreferrer">Quanta Pages</a> 实时提供</span>
     </div>
   </footer>
 
   <script src="vendor/markdown-it.min.js"></script>
+  <script src="assets/projects.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>

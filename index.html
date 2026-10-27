@@ -4,56 +4,72 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light" />
-  <meta name="description" content="苏秉铂的个人网站：Java 后端、并发与数据库学习笔记，内容通过 Quanta 门户 Open API 实时读取。" />
-  <title>苏秉铂 · 个人网站</title>
+  <meta name="description" content="苏秉铂的个人网站：Java 后端项目、工程实践与技术文章。" />
+  <title>苏秉铂 · Java 后端开发</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="site-header__inner">
-      <a class="brand" href="index.html"><span class="brand__mark">苏</span><span>苏秉铂</span></a>
-      <nav class="site-nav">
+      <a class="brand" href="index.html"><span class="brand__mark">苏</span><span class="brand__name">苏秉铂</span></a>
+      <nav class="site-nav" aria-label="主导航">
         <a href="index.html" data-nav="home">首页</a>
         <a href="blog.html" data-nav="blog">文章</a>
+        <a href="projects.html" data-nav="projects">作品</a>
         <a href="about.html" data-nav="about">关于</a>
       </nav>
     </div>
   </header>
 
   <main class="page">
-    <section class="hero">
-      <p class="eyebrow">QUANTA MEMBER · JAVA BACKEND</p>
-      <h1>写代码，也写下为什么。</h1>
-      <p class="hero__lead">
-        这里是苏秉铂的个人站点。文章并不存放在这个仓库里——页面通过 Quanta 门户的开放 API
-        实时读取我在论坛发布的笔记，写文章和改网站是两件事。
-      </p>
-      <div class="hero__meta">
-        <span class="chip">Java 后端</span>
-        <span class="chip">并发与 JVM</span>
-        <span class="chip">数据库与缓存</span>
+    <section class="hero hero--profile">
+      <div class="profile-avatar-slot" data-profile-avatar aria-label="苏秉铂的头像">
+        <span class="profile-avatar avatar--letter" aria-hidden="true">苏</span>
       </div>
-      <div class="actions">
-        <a class="button button--primary" href="blog.html">读文章</a>
-        <a class="button button--ghost" href="https://github.com/subingbo" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <div>
+        <p class="eyebrow">JAVA BACKEND · ENGINEERING NOTES</p>
+        <h1>把业务做成，也把系统为什么可靠讲清楚。</h1>
+        <p class="hero__lead">我是苏秉铂，广东外语外贸大学计算机科学与技术专业本科生，方向是 Java 后端开发。这里记录我交付过的系统、验证过的改进，以及持续更新的技术文章。</p>
+        <ul class="chip-list hero__meta" aria-label="技术方向">
+          <li class="chip">Java 后端</li>
+          <li class="chip">并发与 JVM</li>
+          <li class="chip">数据库与缓存</li>
+          <li class="chip">Agent 工程</li>
+        </ul>
+        <div class="actions">
+          <a class="button button--primary" href="projects.html">查看作品</a>
+          <a class="button button--ghost" href="mailto:21235386625@qq.com">联系我</a>
+          <a class="button button--ghost" href="https://github.com/subingbo" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        </div>
       </div>
     </section>
 
     <section>
-      <div class="section-head"><h2>最新文章</h2><a href="blog.html">查看全部 →</a></div>
-      <div id="latest" class="card-grid"><div class="empty">加载中…</div></div>
+      <div class="section-head">
+        <div><p class="section-kicker">SELECTED WORK</p><h2>精选作品</h2></div>
+        <a href="projects.html">全部作品 →</a>
+      </div>
+      <div id="featured-projects" class="project-grid"><p class="empty">正在整理作品…</p></div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div><p class="section-kicker">WRITING</p><h2>最新文章</h2></div>
+        <a href="blog.html">全部文章 →</a>
+      </div>
+      <div id="latest" class="card-grid"><p class="empty">正在读取文章…</p></div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="site-footer__inner">
-      <span>© 2026 苏秉铂 · 内容来自 Quanta 门户论坛</span>
-      <a href="https://www.quantacenter.com" target="_blank" rel="noopener noreferrer">Quanta Center ↗</a>
+      <span>© 2026 苏秉铂</span>
+      <span>文章由 <a href="https://www.quantacenter.com" target="_blank" rel="noopener noreferrer">Quanta Pages</a> 实时提供</span>
     </div>
   </footer>
 
-  <script src="vendor/markdown-it.min.js"></script>
+  <script src="assets/projects.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>
