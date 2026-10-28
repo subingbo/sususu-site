@@ -149,6 +149,15 @@ test('content/site.json carries the profile and about sections used by the pages
   assert.match(site.profile.github, /^https:\/\//)
   assert.ok(Array.isArray(site.profile.tags) && site.profile.tags.length > 0)
   site.profile.tags.forEach((tag) => assert.ok(typeof tag === 'string' && tag.trim()))
+  if (site.profile.avatar !== undefined) {
+    assert.equal(typeof site.profile.avatar, 'string')
+    if (site.profile.avatar) {
+      assert.match(site.profile.avatar, /^media\/profile\/[A-Za-z0-9._-]+\.webp$/)
+      const absolute = resolveInside(root, site.profile.avatar)
+      assert.equal(fs.existsSync(absolute), true, 'avatar file must exist')
+      assert.ok(fs.statSync(absolute).size <= 2 * MIB, 'avatar must stay under 2 MiB')
+    }
+  }
 
   assert.ok(site.about, 'about is required')
   assert.ok(Array.isArray(site.about.education) && site.about.education.length > 0)

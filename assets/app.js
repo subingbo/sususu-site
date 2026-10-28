@@ -124,6 +124,24 @@
         slot.replaceChildren(letterAvatar(identity.name, 'profile-avatar'))
       })
     }
+    const localAvatar = content.site && content.site.profile && typeof content.site.profile.avatar === 'string'
+      ? content.site.profile.avatar.trim()
+      : ''
+    if (localAvatar) {
+      slots.forEach(function (slot) {
+        slot.setAttribute('aria-label', identity.name + '的头像')
+        const image = document.createElement('img')
+        image.className = 'profile-avatar'
+        image.src = localAvatar
+        image.alt = identity.name
+        image.loading = 'eager'
+        image.addEventListener('error', function () {
+          image.replaceWith(letterAvatar(identity.name, 'profile-avatar'))
+        })
+        slot.replaceChildren(image)
+      })
+      return
+    }
     showFallback()
     try {
       const profile = await fetchApi('/profile')
