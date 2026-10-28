@@ -2,11 +2,16 @@
   "profile": {
     "name": "苏秉铂",
     "initial": "苏",
-    "avatar": "",
+    "avatar": "media/profile/avatar.webp",
     "eyebrow": "JAVA BACKEND · ENGINEERING NOTES",
     "slogan": "把业务做成，也把系统为什么可靠讲清楚。",
     "intro": "我是苏秉铂，广东外语外贸大学计算机科学与技术专业本科生，方向是 Java 后端开发。这里记录我交付过的系统、验证过的改进，以及持续更新的技术文章。",
-    "tags": ["Java 后端", "并发与 JVM", "数据库与缓存", "Agent 工程"],
+    "tags": [
+      "Java 后端",
+      "并发与 JVM",
+      "数据库与缓存",
+      "Agent 工程"
+    ],
     "email": "21235386625@qq.com",
     "github": "https://github.com/subingbo"
   },

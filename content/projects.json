@@ -3,18 +3,36 @@
   "projects": [
     {
       "slug": "quanta-portal",
-      "status": "published",
+      "status": "draft",
       "order": 1,
       "category": "社团平台",
       "title": "Quanta 社团综合服务平台",
       "tagline": "把招新、成员服务与个人网站托管放进同一套可靠的后台。",
       "role": "独立负责后端开发",
       "summary": "面向社团日常运营的综合服务平台，覆盖招新、成员、活动、借阅、资料共享和个人网站托管。",
-      "stack": ["Java 17", "Spring Boot", "Spring Security", "MyBatis", "MySQL", "Redis", "Nginx", "GitHub API"],
+      "stack": [
+        "Java 17",
+        "Spring Boot",
+        "Spring Security",
+        "MyBatis",
+        "MySQL",
+        "Redis",
+        "Nginx",
+        "GitHub API"
+      ],
       "proof": [
-        { "value": "角色 + 部门", "label": "数据权限边界" },
-        { "value": "约 5 分钟", "label": "分支自动检查周期" },
-        { "value": "秒级", "label": "历史版本回滚" }
+        {
+          "value": "角色 + 部门",
+          "label": "数据权限边界"
+        },
+        {
+          "value": "约 5 分钟",
+          "label": "分支自动检查周期"
+        },
+        {
+          "value": "秒级",
+          "label": "历史版本回滚"
+        }
       ],
       "overview": "Quanta 门户服务社团成员、招新参与者和管理人员。我负责后端业务落地，也把个人网站从“需要自己维护服务器”变成可以绑定公开仓库或选择模板后直接发布的成员服务。",
       "sections": [
@@ -47,11 +65,29 @@
       "tagline": "让群组在一张地图上共享地点、讨论活动，并由 Agent 生成可核验的出行计划。",
       "role": "个人项目 · 后端与 Agent 工程",
       "summary": "结合共享地图、实时消息、活动日程和路线规划的校园协作平台，重点处理权限、实时事件和模型工具调用的可靠性。",
-      "stack": ["Java 17", "Spring Boot", "Spring Security", "MyBatis", "MySQL", "Redis", "WebSocket", "高德开放平台"],
+      "stack": [
+        "Java 17",
+        "Spring Boot",
+        "Spring Security",
+        "MyBatis",
+        "MySQL",
+        "Redis",
+        "WebSocket",
+        "高德开放平台"
+      ],
       "proof": [
-        { "value": "0/12 → 8/12", "label": "内部任务成功数" },
-        { "value": "−31.79%", "label": "总 Token" },
-        { "value": "293 项", "label": "后续离线测试" }
+        {
+          "value": "0/12 → 8/12",
+          "label": "内部任务成功数"
+        },
+        {
+          "value": "−31.79%",
+          "label": "总 Token"
+        },
+        {
+          "value": "293 项",
+          "label": "后续离线测试"
+        }
       ],
       "overview": "项目把群组、地图、地点、聊天、活动和个人日程组织在同一个协作空间。成员可以复用地点、实时接收地图事件，也可以让 Agent 在路线和时间约束下生成多站活动计划。",
       "sections": [
