@@ -499,6 +499,8 @@ a:focus-visible, button:focus-visible {
 .project-card__cover .cover__img { transition: transform .3s; }
 .project-card:hover .project-card__cover .cover__img { transform: scale(1.02); }
 .project-cover {
+  position: relative;
+  overflow: hidden;
   margin: 4px 0 24px;
   border: 1px solid var(--line);
   border-radius: var(--radius);

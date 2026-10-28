@@ -17,7 +17,7 @@
   - `content/site.json`：个人资料、技术标签、联系方式、教育、实习与能力。
   - `content/projects.json`：项目状态（published / draft / archived）、排序、文案、链接、封面与媒体列表。
 - 页面用 `fetch(..., { cache: "no-cache" })` 同源读取；读取失败时保留 HTML / `assets/projects.js` 中的内置备份，并在页头显示提示。
-- 作品媒体统一放在 `media/projects/<project-slug>/`：图片为 WebP（最长边 1920px、≤2 MiB），视频为 H.264/AAC MP4（≤1080p、≤90 秒、≤18 MiB，附 WebP 封面）。
+- 作品媒体统一放在 `media/projects/<project-slug>/`：图片为 WebP（最长边 1920px、≤2 MiB），视频为 H.264/AAC MP4（≤1080p、≤12 秒、≤18 MiB，附 WebP 封面）。
 - 这些文件由本地内容工作台维护（编辑、上传、发布），也可以手动修改后提交。
 
 ## 文档
