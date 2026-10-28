@@ -3,7 +3,7 @@
   "projects": [
     {
       "slug": "quanta-portal",
-      "status": "draft",
+      "status": "published",
       "order": 1,
       "category": "社团平台",
       "title": "Quanta 社团综合服务平台",
@@ -54,11 +54,12 @@
       },
       "sourceUrl": "https://github.com/mememoremore/quanta-portal",
       "coverMediaId": null,
-      "media": []
+      "media": [],
+      "__savedSlug": "quanta-portal"
     },
     {
       "slug": "campus-map",
-      "status": "published",
+      "status": "draft",
       "order": 2,
       "category": "个人项目",
       "title": "校园共享地图与社交平台",
@@ -129,7 +130,8 @@
           "caption": "Agent Trace 列表，用于核对模型、工具、耗时与完整性。",
           "tag": "Agent Trace"
         }
-      ]
+      ],
+      "__savedSlug": "campus-map"
     }
   ]
 }
