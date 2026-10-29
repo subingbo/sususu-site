@@ -1,6 +1,6 @@
 # sususu-site
 
-苏秉铂的个人网站，部署于 **https://sususu.page.quantacenter.com**（Quanta Pages）。站点采用经典浅色风格，集中展示后端项目、个人经历与技术文章。
+苏秉铂的个人网站，部署于 **https://sususu.page.quantacenter.com**（Quanta Pages）。站点采用纸感文字风格（paper），集中展示后端项目、个人经历与技术文章。
 
 ## 站点与内容的分离
 
@@ -39,7 +39,7 @@
 ## 目录
 
 ```
-assets/styles.css     全站样式（浅色简约，橙色强调，color-scheme: light）
+assets/styles.css     全站样式（米白纸底、衬线正文、细线分隔、砖红强调，color-scheme: light）
 assets/app.js         API 封装、内容 JSON 加载、列表/详情/留言渲染
 assets/projects.js    作品数据内置快照（内容 JSON 读取失败时兜底）
 content/              site.json / projects.json 公开内容数据

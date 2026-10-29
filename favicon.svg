@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="16" fill="#f97316"/>
-  <text x="32" y="43" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',system-ui,sans-serif" font-size="30" font-weight="900" fill="#ffffff">苏</text>
+  <rect width="64" height="64" rx="8" fill="#fbf8f1"/>
+  <rect x="4" y="4" width="56" height="56" rx="4" fill="none" stroke="#1f1d1a" stroke-width="2"/>
+  <text x="32" y="43" text-anchor="middle" font-family="Georgia, 'Songti SC', 'Noto Serif SC', serif" font-size="30" font-weight="600" fill="#9a3b2c">苏</text>
 </svg>
